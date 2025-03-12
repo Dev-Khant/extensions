@@ -32,6 +32,16 @@
       "mode": "view"
     }
   ],
+  "preferences": [
+    {
+      "name": "mem0mem0ApiKey",
+      "type": "password",
+      "required": true,
+      "title": "Mem0 API Key",
+      "description": "Your Mem0 API key",
+      "default": ""
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.93.2",
     "@raycast/utils": "^1.17.0",

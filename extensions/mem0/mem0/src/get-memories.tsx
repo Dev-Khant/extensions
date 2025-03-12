@@ -1,4 +1,4 @@
-import { List, Action, ActionPanel, Icon } from "@raycast/api";
+import { List, Action, ActionPanel, Icon, getPreferenceValues } from "@raycast/api";
 import { useEffect, useState } from "react";
 import fetch from "node-fetch";
 
@@ -21,7 +21,12 @@ interface ApiResponse {
   results: Memory[];
 }
 
+interface Preferences {
+  mem0ApiKey: string;
+}
+
 export default function Command() {
+  const preferences = getPreferenceValues<Preferences>();
   const [memories, setMemories] = useState<Memory[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [nextPage, setNextPage] = useState<string | null>(null);
@@ -36,7 +41,7 @@ export default function Command() {
           {
             method: "GET",
             headers: {
-              "Authorization": "Token m0-aU76vlvUJccJMUaeZP7Li1KPZ68XTd72zDb65FZY",
+              "Authorization": `Token ${preferences.mem0ApiKey}`,
               "Content-Type": "application/json",
             },
           }
@@ -59,7 +64,7 @@ export default function Command() {
     }
 
     fetchMemories();
-  }, []);
+  }, [preferences.mem0ApiKey]);
 
   if (error) {
     return <List><List.Item title={`Error: ${error}`} /></List>;

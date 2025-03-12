@@ -1,4 +1,4 @@
-import { Form, ActionPanel, Action, showToast, Toast, Clipboard, Detail } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, Toast, Clipboard, Detail, getPreferenceValues } from "@raycast/api";
 import { useState } from "react";
 import fetch from "node-fetch";
 
@@ -17,7 +17,12 @@ interface SearchResponse {
   results: SearchResult[];
 }
 
+interface Preferences {
+  mem0ApiKey: string;
+}
+
 export default function Command() {
+  const preferences = getPreferenceValues<Preferences>();
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<string>("");
   const [showResults, setShowResults] = useState(false);
@@ -30,7 +35,7 @@ export default function Command() {
       const response = await fetch("https://api.mem0.ai/v1/memories/search/", {
         method: "POST",
         headers: {
-          "Authorization": "Token m0-aU76vlvUJccJMUaeZP7Li1KPZ68XTd72zDb65FZY",
+          "Authorization": `Token ${preferences.mem0ApiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

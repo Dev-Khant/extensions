@@ -1,4 +1,4 @@
-import { Detail, Clipboard, List, ActionPanel, Action, Form } from "@raycast/api";
+import { Detail, Clipboard, List, ActionPanel, Action, Form, getPreferenceValues } from "@raycast/api";
 import { useEffect, useState } from "react";
 import fetch from "node-fetch";
 
@@ -11,7 +11,12 @@ interface ApiResponse {
   results?: MemoryResult[];
 }
 
+interface Preferences {
+  mem0ApiKey: string;
+}
+
 export default function Command() {
+  const preferences = getPreferenceValues<Preferences>();
   const [clipboardText, setClipboardText] = useState<string>("");
   const [results, setResults] = useState<MemoryResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +42,7 @@ export default function Command() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Token m0-aU76vlvUJccJMUaeZP7Li1KPZ68XTd72zDb65FZY"
+          "Authorization": `Token ${preferences.mem0ApiKey}`
         },
         body: JSON.stringify({
           messages: [{ 
